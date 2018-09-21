@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace _2018_MD21_Converter
 {
-    class rootGen
+    class rootGenFiledata
     {
 
         public void SelectM2Root()

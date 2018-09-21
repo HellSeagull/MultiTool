@@ -10,6 +10,8 @@ namespace _2018_MD21_Converter
     class Start
     {
 
+        static string server, database, username, password, table;
+
         public Start()
         {
             
@@ -28,7 +30,7 @@ namespace _2018_MD21_Converter
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Press -M to go to M2 mode");
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Press -R to go to Filedata Sorting mode");
+            Console.WriteLine("Press -R to go to SORTING/RETRIEVE menu");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press -E to exit the application");
 
@@ -51,14 +53,60 @@ namespace _2018_MD21_Converter
 
             }else if(response == ConsoleKey.R)
             {
-                rootGen();
+                Sorting_Retrieve_Menu();
             }
             else if(response == ConsoleKey.E)
             {
+                Console.Clear();
                 Environment.Exit(1);
             }
 
             Console.ReadLine();
+
+        }
+
+        static void Sorting_Retrieve_Menu()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine("Roccus Multi Converter");
+            Console.WriteLine("Created by ©Roccus");
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Press -S to go to the FILEDATA_SORTING mode");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Press -R to go to the CASCHOST_RETRIEVE mode");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Press -E to return to main menu");
+
+            ConsoleKey response;
+
+            do
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("Choose your mode : ");
+                response = Console.ReadKey(false).Key;
+                if (response != ConsoleKey.Enter)
+                    Console.WriteLine();
+
+            } while (response != ConsoleKey.S && response != ConsoleKey.R && response != ConsoleKey.E);
+
+            if(response == ConsoleKey.S)
+            {
+                rootGenFiledata();
+            }
+            else if(response == ConsoleKey.R)
+            {
+                rootGenCaschost();
+            }
+            else if(response == ConsoleKey.E)
+            {
+                Console.Clear();
+                Main(new string[0]);
+            }
 
         }
 
@@ -435,7 +483,7 @@ namespace _2018_MD21_Converter
 
         }
 
-        static void rootGen()
+        static void rootGenFiledata()
         {
 
             Console.Clear();
@@ -447,16 +495,16 @@ namespace _2018_MD21_Converter
             Console.WriteLine();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("FILEDATA SORTING MODE");
+            Console.WriteLine("FILEDATA_SORTING MODE");
 
-            rootChoice();
+            rootChoiceFiledata();
 
         }
 
-        static void rootChoice()
+        static void rootChoiceFiledata()
         {
 
-            rootGen gen = new rootGen();
+            rootGenFiledata gen = new rootGenFiledata();
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Choose what you want to do");
@@ -508,7 +556,7 @@ namespace _2018_MD21_Converter
                 gen.SelectM2Root();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA SORTING menu");
+                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
                 Console.ReadLine();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -519,8 +567,8 @@ namespace _2018_MD21_Converter
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA SORTING MODE");
-                rootChoice();
+                Console.WriteLine("FILEDATA_SORTING MODE");
+                rootChoiceFiledata();
             }
             else if (choice == ConsoleKey.A)
             {
@@ -542,7 +590,7 @@ namespace _2018_MD21_Converter
                 gen.SelectANIMRoot();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA SORTING menu");
+                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
                 Console.ReadLine();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -553,8 +601,8 @@ namespace _2018_MD21_Converter
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA SORTING MODE");
-                rootChoice();
+                Console.WriteLine("FILEDATA_SORTING MODE");
+                rootChoiceFiledata();
             }
             else if (choice == ConsoleKey.B)
             {
@@ -576,7 +624,7 @@ namespace _2018_MD21_Converter
                 gen.SelectBONERoot();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA SORTING menu");
+                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
                 Console.ReadLine();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -587,8 +635,8 @@ namespace _2018_MD21_Converter
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA SORTING MODE");
-                rootChoice();
+                Console.WriteLine("FILEDATA_SORTING MODE");
+                rootChoiceFiledata();
             }
             else if (choice == ConsoleKey.S)
             {
@@ -610,7 +658,7 @@ namespace _2018_MD21_Converter
                 gen.SelectSKINRoot();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA SORTING menu");
+                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
                 Console.ReadLine();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -621,8 +669,8 @@ namespace _2018_MD21_Converter
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA SORTING MODE");
-                rootChoice();
+                Console.WriteLine("FILEDATA_SORTING MODE");
+                rootChoiceFiledata();
             }
             else if (choice == ConsoleKey.P)
             {
@@ -644,7 +692,7 @@ namespace _2018_MD21_Converter
                 gen.SelectPHYSRoot();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA SORTING menu");
+                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
                 Console.ReadLine();
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -655,13 +703,13 @@ namespace _2018_MD21_Converter
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA SORTING MODE");
-                rootChoice();
+                Console.WriteLine("FILEDATA_SORTING MODE");
+                rootChoiceFiledata();
             }
             else if (choice == ConsoleKey.X)
             {
                 Console.Clear();
-                rootGen();
+                rootGenFiledata();
             }
             else if (choice == ConsoleKey.E)
             {
@@ -670,6 +718,271 @@ namespace _2018_MD21_Converter
             }
 
         }
-       
+
+        static void rootGenCaschost()
+        {
+
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine("Roccus Multi Converter");
+            Console.WriteLine("Created by ©Roccus");
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("CASCHOST_DATA_RETRIEVE MODE");
+            Console.WriteLine();
+            Console.WriteLine("(If you have an error, press ESC to reset the menu)");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            bool continueReading = true;
+            char newLineChar = '\r';
+            StringBuilder passwordBuilder = new StringBuilder();
+
+            Console.Write("Enter your Server's name : ");
+            server = Console.ReadLine();
+            Console.Write("Enter your Database's name : ");
+            database = Console.ReadLine();
+            Console.Write("Enter your Username : ");
+            username = Console.ReadLine();
+            Console.Write("Enter your Password : ");
+            while (continueReading)
+            {
+                ConsoleKeyInfo consoleKeyInfo = Console.ReadKey(true);
+                char passwordChar = consoleKeyInfo.KeyChar;
+
+                if (passwordChar == newLineChar)
+                {
+                    continueReading = false;
+                }
+                else
+                {
+                    passwordBuilder.Append(passwordChar.ToString());
+                }
+            }
+            password = passwordBuilder.ToString();
+
+            rootChoiceCaschost();
+
+        }
+
+        static void rootChoiceCaschost()
+        {
+            Console.Clear();
+            rootGenCaschost gen = new rootGenCaschost(server, database, username, password);
+            if (gen.OpenConnection() == false)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Cannot connect to server, maybe you entered either:\n A non-existing DB, wrong Server or wrong pseudo/password.  Contact administrator\n Press ESC to retry");
+                if (Console.ReadKey(true).Key == ConsoleKey.Escape)
+                {
+                    gen.CloseConnection();
+                    rootGenCaschost();
+                }
+                else if(Console.ReadKey(true).Key == ConsoleKey.Enter)
+                {
+                    gen.CloseConnection();
+                    Sorting_Retrieve_Menu();
+                }
+            }
+            gen.CloseConnection();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine("Roccus Multi Converter");
+            Console.WriteLine("Created by ©Roccus");
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("You're connected to " + server + " on DB : " + database);
+            Console.WriteLine("User : " + username);
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Choose what you want to do");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Press -M to generate M2 root");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Press -S to generate SKIN root");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Press -A to generate ANIM root");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Press -B to generate BONE root");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("Press -P to generate PHYS root");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Press -X to return the server connection menu");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Press -E to return the main menu");
+
+            ConsoleKey choice;
+
+            do
+            {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("What do you want to do ? : ");
+                choice = Console.ReadKey(false).Key;
+                if (choice != ConsoleKey.Enter)
+                    Console.WriteLine();
+
+            } while (choice != ConsoleKey.M && choice != ConsoleKey.S && choice != ConsoleKey.A
+                    && choice != ConsoleKey.B && choice != ConsoleKey.P && choice != ConsoleKey.E && choice != ConsoleKey.X);
+
+            if (choice == ConsoleKey.M)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("You're connected to " + server + " on DB : " + database);
+                Console.WriteLine("User : " + username);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Generate M2 root");
+                Console.WriteLine();
+                Console.Write("Enter your Table's name : ");
+                table = Console.ReadLine();
+                gen.SelectM2Root(table);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.ReadLine();
+                rootChoiceCaschost();
+            }
+            else if (choice == ConsoleKey.A)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("You're connected to " + server + " on DB : " + database);
+                Console.WriteLine("User : " + username);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Generate ANIM root");
+                Console.WriteLine();
+                Console.Write("Enter your Table's name : ");
+                table = Console.ReadLine();
+                gen.SelectANIMRoot(table);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.ReadLine();
+                rootChoiceCaschost();
+            }
+            else if (choice == ConsoleKey.B)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("You're connected to " + server + " on DB : " + database);
+                Console.WriteLine("User : " + username);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Generate BONE root");
+                Console.WriteLine();
+                Console.Write("Enter your Table's name : ");
+                table = Console.ReadLine();
+                gen.SelectBONERoot(table);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.ReadLine();
+                rootChoiceCaschost();
+            }
+            else if (choice == ConsoleKey.S)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("You're connected to " + server + " on DB : " + database);
+                Console.WriteLine("User : " + username);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Generate SKIN root");
+                Console.WriteLine();
+                Console.Write("Enter your Table's name : ");
+                table = Console.ReadLine();
+                gen.SelectSKINRoot(table);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.ReadLine();
+                rootChoiceCaschost();
+            }
+            else if (choice == ConsoleKey.P)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("You're connected to " + server + " on DB : " + database);
+                Console.WriteLine("User : " + username);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Generate PHYS root");
+                Console.WriteLine();
+                Console.Write("Enter your Table's name : ");
+                table = Console.ReadLine();
+                gen.SelectPHYSRoot(table);
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.ReadLine();
+                rootChoiceCaschost();
+            }
+            else if (choice == ConsoleKey.X)
+            {
+                Console.Clear();
+                server = string.Empty;
+                database = string.Empty;
+                username = string.Empty;
+                password = string.Empty;
+                table = string.Empty;
+                rootGenCaschost();
+            }
+            else if (choice == ConsoleKey.E)
+            {
+                Console.Clear();
+                server = string.Empty;
+                database = string.Empty;
+                username = string.Empty;
+                password = string.Empty;
+                table = string.Empty;
+                Main(new string[0]);
+            }
+
+        }
+
     }
 }
