@@ -28,16 +28,22 @@ namespace _2018_MD21_Converter
             BaseFile = filename;
 
             //Find offsets
+            //Créer buffer avec données du m2
             byte[] data = File.ReadAllBytes(filename);
+            //Utilise SearchPattern pour ajouter dans le dictionnaires les offsets de lecture des chunk dans la liste de chunk
             foreach (var c in ChunkNames)
                 Offsets.Add(c, SearchPattern(data, Encoding.UTF8.GetBytes(c)));
 
             //Calculate MD20 size
+            //si on lit de 0 à 4 'MD21' alors on lit les offsets de du dictionnaire et on récupère la plus petite valeur
+            //On lui enlève 8 = la taille du header MD21, ainsi on obtient la taille du m2 sans les chunk ni le header
             if (Encoding.UTF8.GetString(data, 0, 4) == "MD21")
                 MD20Size = (uint)Offsets.Where(x => x.Value > -1).Min(x => x.Value) - 8;
+            //sinon on lit la fichier entier en taille, il faut convertir à WoD pour ça, s'il y a les chunk ça va psoer problème.
             else
                 MD20Size = (uint)data.Length;
 
+            //Si pas de offset dans la liste, on arrête.
             if (!Offsets.Any(x => x.Value > -1))
                 return;
 
@@ -50,11 +56,15 @@ namespace _2018_MD21_Converter
                     if (offset.Value == -1)
                         continue;
 
+                    //On lit les données du m2 au niveau des chunks. On met la position du reader à l'offset et on ajoute 4 pour passer le nom.
                     br.BaseStream.Position = offset.Value + 4; //Skip chunk name
 
+                    //ReadUint32 pour lire 4 octets, cela placera également le reader après ces 4 octets en position.
                     uint size = br.ReadUInt32(); //Chunk size
                     switch (offset.Key)
                     {
+                        //Pour chaque cas il faut divisier la taille par 4 pour le vrai nombre d'élément de référencement dans le chunk. Size lecture = 4 * vraie size.
+                        //A chaque lecture la position est modifiée, pas besoin de repositionner (je sais pas pourquoi c'est 8 sur le afid de barn, c'pas de moi c'te méthode.
                         case "SKID":
                             SKID = br.ReadUInt32();
                             break;

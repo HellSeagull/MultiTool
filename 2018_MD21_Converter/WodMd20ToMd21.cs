@@ -9,7 +9,7 @@ namespace _2018_MD21_Converter
 {
     class WodMd20ToMd21
     {
-
+        //Voir classes chunk dans headerFix (structure des chunks
         List<AnimChunk> AnimChunk { get; set; } = new List<AnimChunk>();
         List<BoneChunk> BoneChunk { get; set; } = new List<BoneChunk>();
         List<SkinChunk> SkinChunk { get; set; } = new List<SkinChunk>();
@@ -22,7 +22,7 @@ namespace _2018_MD21_Converter
             BoneChunk.Clear();
             SkinChunk.Clear();
             PhysChunk.Clear();
-
+            //Lecture des fichiers root du multitool pour peupler les listes.
             populateAnimChunk(modelName);
             populateBoneChunk(modelName);
             populateSkinChunk(modelName);
@@ -75,6 +75,7 @@ namespace _2018_MD21_Converter
                     {
                         fileName = file[i][0],
                         rootId = file[i][1],
+                        //Particularité des AFID, parfois il y a un subanimID
                         AnimId = file[i][0].Substring(modelName.Length, 4).TrimStart('0'),
                         subAnimId = file[i][0].Substring(modelName.Length + 6, 1)
                     });
@@ -150,7 +151,7 @@ namespace _2018_MD21_Converter
 
         public void writeData(string modelName, string path)
         {
-
+            //Liste pour contenir les éléments des Chunk et obtenir leur taille de lecture.
             List<UInt32> afidSize = new List<UInt32>();
             List<UInt32> bfidSize = new List<UInt32>();
             List<UInt32> sfidSize = new List<UInt32>();
@@ -237,14 +238,14 @@ namespace _2018_MD21_Converter
                 }
 
             }
-
+            //On crée le buffer de donénes du m2
             byte[] modelData = File.ReadAllBytes(path);
 
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite))
             using (var bw = new BinaryWriter(fs))
             using (var br = new BinaryReader(fs))
             {
-
+                //Etant un modèle m2 Wod, on se place à la toute fin stream du fichier ainsi.
                 bw.BaseStream.Seek(modelData.Length, SeekOrigin.Current);
 
                 if (AnimChunk != null)
@@ -252,7 +253,8 @@ namespace _2018_MD21_Converter
 
                     if (afidSize.Count != 0)
                     {
-
+                        //On commence par l'écriture d'AFID, pour ça il faut donct un getbytes 'AFID' et utiliser le nombre d'éléments * 4 de la liste Size associée
+                        //Pour avoir la bonne size d'AFID dans le m2. le write écrira 4 octets et déplacera le curseur à chaque fois.
                         bw.Write(Encoding.UTF8.GetBytes("AFID"));
                         bw.Write(BitConverter.GetBytes((afidSize.Count) * 4));
 
@@ -267,9 +269,11 @@ namespace _2018_MD21_Converter
 
                         if (valued1 != string.Empty && valued2 != string.Empty)
                         {
-
+                            //AnimID et subAnimID sans des Uint16 donc sur 2 octets chacun dans la structure.
                             UInt16 animIdValue = UInt16.Parse(valued1);
                             UInt16 subAnimIdValue = UInt16.Parse(valued2);
+                            //Chaque write sur un uint16 écrira 2 octets, ainsi on aura la vraie structure avec un total de 4 octets incluant
+                            //l'animid et son subanimid pour la différenciation.
                             bw.Write(BitConverter.GetBytes(animIdValue));
                             bw.Write(BitConverter.GetBytes(subAnimIdValue));
 
@@ -277,7 +281,7 @@ namespace _2018_MD21_Converter
 
                         if (valued3 != string.Empty)
                         {
-
+                            //Une fois l'animid écrit il faut écrire à sa suite le rootid.
                             UInt32 rootAnimIdValue = UInt32.Parse(valued3);
                             bw.Write(BitConverter.GetBytes(rootAnimIdValue));
 
@@ -286,7 +290,7 @@ namespace _2018_MD21_Converter
                     }
 
                 }
-
+                //On répète l'opération pour cahque chunk mais cette fois-ci pas de particularité, il suffit décrire le root_id
                 if (BoneChunk != null)
                 {
 
@@ -368,6 +372,7 @@ namespace _2018_MD21_Converter
 
                 }
 
+                //Check sur les modèles de race car ceux-ci possède un TXAC (je sais pas vraiment en quoi il est utile)
                 if (modelName == "orcmale_hd" || modelName == "orcfemale_hd" || modelName == "humanmale_hd" || modelName == "humanfemale_hd"
                         || modelName == "dwarfmale_hd" || modelName == "dwarffemale_hd" || modelName == "gnomemale_hd" || modelName == "gnomefemale_hd"
                         || modelName == "nightelfmale_hd" || modelName == "nightelffemale_hd" || modelName == "draeneimale_hd" || modelName == "draeneifemelle_hd"
@@ -375,11 +380,11 @@ namespace _2018_MD21_Converter
                         || modelName == "trollmale_hd" || modelName == "trollfemale_hd" || modelName == "scourgemale_hd" || modelName == "scourgefemale_hd"
                         || modelName == "bloodelfmale_hd" || modelName == "bloodelffemale_hd")
                 {
-
+                    //Ecriture du TXAC à la fin, taille fixe qui est la même pour tous.
                     bw.Write(Encoding.UTF8.GetBytes("TXAC"));
                     Int16 v = 14;
                     Int16 u = Int16.Parse(v.ToString());
-
+                    //le U est le TXACSize
                     bw.Write(BitConverter.GetBytes(u));
 
                     bw.Write(BitConverter.GetBytes(0x00));
@@ -388,20 +393,21 @@ namespace _2018_MD21_Converter
                     bw.Write(BitConverter.GetBytes(0x00));
 
                     fs.SetLength(fs.Length - 2);
-
+                    //Je sais pas vraiment l'expliquer mais pour avoir la bonne taille pour le txac à la fin je dois truncate la fin en enlevant 2 à la taille du stream.
+                    //Le fichier est maintenant peuplé de ses chunks.
                 }
 
                 br.Close();
                 bw.Close();
                 fs.Close();
-
+                //Maintenant qu'on a un md21 avec header and chunk, il faut se placer à l'offset 12 pour changer le flag de version donc 12 dans 010Editor
                 FileStream fs2 = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
                 BinaryWriter bw2 = new BinaryWriter(fs2);
                 bw2.BaseStream.Position = 12;
                 bw2.Write(BitConverter.GetBytes(274));
                 bw2.Close();
                 fs2.Close();
-
+                //Done !
                 afidSize.Clear();
                 bfidSize.Clear();
                 sfidSize.Clear();
