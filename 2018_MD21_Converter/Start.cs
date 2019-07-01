@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Roccus_MultiTool;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace _2018_MD21_Converter
+namespace Roccus_MultiTool
 {
     class Start
     {
@@ -17,7 +17,7 @@ namespace _2018_MD21_Converter
             
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -31,6 +31,16 @@ namespace _2018_MD21_Converter
             Console.WriteLine("Press -M to go to M2 mode");
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("Press -R to go to SORTING/RETRIEVE menu");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("Press -I to go to the DB Hotfix Application");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Press -G to go to the Geoset Decryptor Application");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Press -D to go to the Mask Decryptor Mode");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("Press -H to go to the Mask Generator Application");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Press -T to go to the Texture Reading Mode");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press -E to exit the application");
 
@@ -45,17 +55,78 @@ namespace _2018_MD21_Converter
                 if (response != ConsoleKey.Enter)
                     Console.WriteLine();
 
-            } while (response != ConsoleKey.M && response != ConsoleKey.R && response != ConsoleKey.E);
+            } while (response != ConsoleKey.M && response != ConsoleKey.R && response != ConsoleKey.I
+                     && response != ConsoleKey.G && response != ConsoleKey.D && response != ConsoleKey.H
+                      && response != ConsoleKey.T && response != ConsoleKey.E);
 
             if (response == ConsoleKey.M)
             {
                 M2Menu();
 
-            }else if(response == ConsoleKey.R)
+            }
+            else if (response == ConsoleKey.R)
             {
                 Sorting_Retrieve_Menu();
             }
-            else if(response == ConsoleKey.E)
+            else if (response == ConsoleKey.I)
+            {
+                frmConnection con = new frmConnection();
+                con.ShowDialog();
+                Console.Clear();
+                Main(new string[0]);
+            }
+            else if (response == ConsoleKey.G)
+            {
+                if (File.Exists(System.Reflection.Assembly.GetEntryAssembly().Location.Substring(0, System.Reflection.Assembly.GetEntryAssembly().Location.LastIndexOf("\\")) + @"\Model_Root\Root"))
+                {
+                    GeosetDecryptor geo = new GeosetDecryptor();
+                    geo.ShowDialog();
+                    Console.Clear();
+                    Main(new string[0]);
+                }
+                else
+                {
+                    Progress prg = new Progress();
+                    prg.ShowDialog();
+                    GeosetDecryptor geo = new GeosetDecryptor();
+                    geo.ShowDialog();
+                    Console.Clear();
+                    Main(new string[0]);
+                }
+            }
+            else if (response == ConsoleKey.D)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.WriteLine();
+                MaskDecryptor.Work();
+            }
+            else if (response == ConsoleKey.H)
+            {
+                MaskGenerator mg = new MaskGenerator();
+                mg.ShowDialog();
+                Console.Clear();
+                Main(new string[0]);
+            }
+            else if (response == ConsoleKey.T)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("Roccus Multi Converter");
+                Console.WriteLine("Created by ©Roccus");
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                M2_Reader();
+            }
+            else if (response == ConsoleKey.E)
             {
                 Console.Clear();
                 Environment.Exit(1);
@@ -509,16 +580,8 @@ namespace _2018_MD21_Converter
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Choose what you want to do");
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Press -M to generate M2 root");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Press -S to generate SKIN root");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Press -A to generate ANIM root");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Press -B to generate BONE root");
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine("Press -P to generate PHYS root");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Press -O to generate roots");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press -E to return the main menu");
 
@@ -533,10 +596,9 @@ namespace _2018_MD21_Converter
                 if (choice != ConsoleKey.Enter)
                     Console.WriteLine();
 
-            } while (choice != ConsoleKey.M && choice != ConsoleKey.S && choice != ConsoleKey.A
-                    && choice != ConsoleKey.B && choice != ConsoleKey.P && choice != ConsoleKey.E);
+            } while (choice != ConsoleKey.O && choice != ConsoleKey.E);
 
-            if (choice == ConsoleKey.M)
+            if (choice == ConsoleKey.O)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -545,170 +607,33 @@ namespace _2018_MD21_Converter
                 Console.WriteLine("Created by ©Roccus");
                 Console.WriteLine("-----------------------------------------------");
                 Console.WriteLine();
-                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate M2 root");
+                Console.WriteLine("Generate roots");
                 Console.WriteLine();
-                Console.Write("Press Enter to Generate a M2 Root");
+                Console.Write("Press Enter to Generate Roots");
                 Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Filedata is being processed, please wait...");
+                string binaryPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+                string exeName = Path.GetFileName(binaryPath);
+                binaryPath = binaryPath.Replace(exeName, "rootFiles");
+                if (Directory.GetFiles(binaryPath).Length != 0)
+                {
+                    foreach (string s in Directory.GetFiles(binaryPath))
+                    {
+                        File.Delete(s);
+                    }
+                }
                 gen.SelectM2Root();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
-                Console.ReadLine();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA_SORTING MODE");
-                rootChoiceFiledata();
-            }
-            else if (choice == ConsoleKey.A)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate ANIM root");
-                Console.WriteLine();
-                Console.Write("Press Enter to Generate an ANIM Root");
-                Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Filedata is being processed, please wait...");
                 gen.SelectANIMRoot();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
-                Console.ReadLine();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA_SORTING MODE");
-                rootChoiceFiledata();
-            }
-            else if (choice == ConsoleKey.B)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate BONE root");
-                Console.WriteLine();
-                Console.Write("Press Enter to Generate a BONE Root");
-                Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Filedata is being processed, please wait...");
                 gen.SelectBONERoot();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
-                Console.ReadLine();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA_SORTING MODE");
-                rootChoiceFiledata();
-            }
-            else if (choice == ConsoleKey.S)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate SKIN root");
-                Console.WriteLine();
-                Console.Write("Press Enter to Generate a SKIN Root");
-                Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Filedata is being processed, please wait...");
-                gen.SelectSKINRoot();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
-                Console.ReadLine();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA_SORTING MODE");
-                rootChoiceFiledata();
-            }
-            else if (choice == ConsoleKey.P)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate PHYS root");
-                Console.WriteLine();
-                Console.Write("Press Enter to Generate a PHYS Root");
-                Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Filedata is being processed, please wait...");
                 gen.SelectPHYSRoot();
+                gen.SelectSKINRoot();
+                gen.SelectBLPRoot();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the FILEDATA_SORTING menu");
+                Console.WriteLine("All roots processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
                 Console.ReadLine();
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("FILEDATA_SORTING MODE");
-                rootChoiceFiledata();
-            }
-            else if (choice == ConsoleKey.X)
-            {
-                Console.Clear();
                 rootGenFiledata();
             }
             else if (choice == ConsoleKey.E)
@@ -807,16 +732,8 @@ namespace _2018_MD21_Converter
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Choose what you want to do");
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Press -M to generate M2 root");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Press -S to generate SKIN root");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Press -A to generate ANIM root");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Press -B to generate BONE root");
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine("Press -P to generate PHYS root");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Press -O to generate root");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Press -X to return the server connection menu");
             Console.ForegroundColor = ConsoleColor.White;
@@ -833,10 +750,9 @@ namespace _2018_MD21_Converter
                 if (choice != ConsoleKey.Enter)
                     Console.WriteLine();
 
-            } while (choice != ConsoleKey.M && choice != ConsoleKey.S && choice != ConsoleKey.A
-                    && choice != ConsoleKey.B && choice != ConsoleKey.P && choice != ConsoleKey.E && choice != ConsoleKey.X);
+            } while (choice != ConsoleKey.O && choice != ConsoleKey.E && choice != ConsoleKey.X);
 
-            if (choice == ConsoleKey.M)
+            if (choice == ConsoleKey.O)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -850,114 +766,28 @@ namespace _2018_MD21_Converter
                 Console.WriteLine("User : " + username);
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate M2 root");
+                Console.WriteLine("Generate roots");
                 Console.WriteLine();
                 Console.Write("Enter your Table's name : ");
                 table = Console.ReadLine();
+                string binaryPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+                string exeName = Path.GetFileName(binaryPath);
+                binaryPath = binaryPath.Replace(exeName, "rootFiles");
+                if(Directory.GetFiles(binaryPath).Length != 0)
+                {
+                    foreach(string s in Directory.GetFiles(binaryPath))
+                    {
+                        File.Delete(s);
+                    }
+                }
                 gen.SelectM2Root(table);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
-                Console.ReadLine();
-                rootChoiceCaschost();
-            }
-            else if (choice == ConsoleKey.A)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("You're connected to " + server + " on DB : " + database);
-                Console.WriteLine("User : " + username);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate ANIM root");
-                Console.WriteLine();
-                Console.Write("Enter your Table's name : ");
-                table = Console.ReadLine();
                 gen.SelectANIMRoot(table);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
-                Console.ReadLine();
-                rootChoiceCaschost();
-            }
-            else if (choice == ConsoleKey.B)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("You're connected to " + server + " on DB : " + database);
-                Console.WriteLine("User : " + username);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate BONE root");
-                Console.WriteLine();
-                Console.Write("Enter your Table's name : ");
-                table = Console.ReadLine();
                 gen.SelectBONERoot(table);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
-                Console.ReadLine();
-                rootChoiceCaschost();
-            }
-            else if (choice == ConsoleKey.S)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("You're connected to " + server + " on DB : " + database);
-                Console.WriteLine("User : " + username);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate SKIN root");
-                Console.WriteLine();
-                Console.Write("Enter your Table's name : ");
-                table = Console.ReadLine();
+                gen.SelectPHYSRoot(table);
                 gen.SelectSKINRoot(table);
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
-                Console.ReadLine();
-                rootChoiceCaschost();
-            }
-            else if (choice == ConsoleKey.P)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine("Roccus Multi Converter");
-                Console.WriteLine("Created by ©Roccus");
-                Console.WriteLine("-----------------------------------------------");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("You're connected to " + server + " on DB : " + database);
-                Console.WriteLine("User : " + username);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Generate PHYS root");
-                Console.WriteLine();
-                Console.Write("Enter your Table's name : ");
-                table = Console.ReadLine();
-                gen.SelectPHYSRoot(table);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("All root paths processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
+                Console.WriteLine("All roots processed, press Enter to return to the CASCHOST_DATA_RETRIEVE menu");
                 Console.ReadLine();
                 rootChoiceCaschost();
             }
@@ -982,6 +812,95 @@ namespace _2018_MD21_Converter
                 Main(new string[0]);
             }
 
+        }
+
+        static void M2_Reader()
+        {
+            string binaryPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            string exeName = Path.GetFileName(binaryPath);
+            binaryPath = binaryPath.Replace(exeName, "M2_Reader");
+
+            List<string> path = new List<string>();
+            string[] files = Directory.GetFiles(binaryPath);
+            for (UInt32 i = 0; i < files.Length; i++)
+            {
+                if (files[i].Contains("m2"))
+                    path.Add(files[i]);
+            }
+
+            if (path.Count() != 0)
+            {
+                foreach (string name in path)
+                {
+                    string modelName = Path.GetFileName(name);
+                    string[] array = modelName.Split('.');
+                    string subName = array[0];
+
+                    Console.WriteLine(modelName);
+
+                }
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine("These are all the files that can be read");
+
+                ConsoleKey response;
+
+                do
+                {
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("Do you want to continue ? [y/n] ");
+                    response = Console.ReadKey(false).Key;
+                    if (response != ConsoleKey.Enter)
+                        Console.WriteLine();
+
+                } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+
+                if (response == ConsoleKey.Y)
+                {
+                    Int16 counter = 0;
+                    for (Int32 i = 0; i < path.Count(); i++)
+                    {
+                        string modelName = Path.GetFileName(path[i]);
+                        string[] array = modelName.Split('.');
+                        string subName = array[0];
+
+                        byte[] data = File.ReadAllBytes(path[i]);
+
+                        if (Encoding.UTF8.GetString(data, 0, 4) == "MD21")
+                        {
+                            if (Encoding.UTF8.GetString(data).Contains("TXID"))
+                            {
+                                Reader.Work_TXID(path[i]);
+                                counter++;
+                            }
+                            else
+                            {
+                                Console.WriteLine();
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Not a BFA m2");
+                                counter++;
+                            }
+                        }
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("All directory's files processed, press Enter to return to the M2 menu");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Main(new string[0]);
+                }
+                else
+                {
+                    Console.Clear();
+                    Main(new string[0]);
+                }
+            }
         }
 
     }

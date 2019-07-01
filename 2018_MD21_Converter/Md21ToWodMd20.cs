@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2018_MD21_Converter
+namespace Roccus_MultiTool
 {
     class Md21ToWodMd20
     {

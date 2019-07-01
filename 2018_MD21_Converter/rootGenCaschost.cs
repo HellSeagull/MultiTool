@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace _2018_MD21_Converter
+namespace Roccus_MultiTool
 {
     class rootGenCaschost
     {
@@ -719,6 +719,139 @@ namespace _2018_MD21_Converter
                             if (listFileName[i].Contains(".phys"))
                             {
                                 Console.WriteLine("- " + listFileName[i] + " already exists in PHYS_Root");
+                            }
+                        }
+                    }
+                }
+
+                var tempFileName = Path.GetTempFileName();
+                try
+                {
+                    using (var streamReader = new StreamReader(binaryPath))
+                    using (var streamWriter = new StreamWriter(tempFileName))
+                    {
+                        string line;
+                        while ((line = streamReader.ReadLine()) != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(line))
+                                streamWriter.WriteLine(line);
+                        }
+                    }
+                    File.Copy(tempFileName, binaryPath, true);
+                }
+                finally
+                {
+                    File.Delete(tempFileName);
+                }
+
+            }
+
+        }
+
+        public void SelectBLPRoot(string table)
+        {
+            string query = "SELECT Path, FileDataId FROM " + database + "." + table + " WHERE Path like '%.blp'";
+
+            //Create a list to store the result
+            List<string> names = new List<string>();
+            List<string> numbers = new List<string>();
+
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    names.Add(dataReader["Path"] + "");
+                    numbers.Add(dataReader["FileDataId"] + "");
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+
+                string binaryPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+                string exeName = Path.GetFileName(binaryPath);
+                binaryPath = binaryPath.Replace(exeName, "rootFiles\\BLP_Root");
+
+                List<string> listFileName = new List<string>();
+                List<string> listFileIds = new List<string>();
+
+                foreach (string s in names)
+                {
+                    var line = s;
+                    var linelength = line.Length;
+                    var lastSlashPosition = line.LastIndexOf('\\');
+                    var name = line.Substring(lastSlashPosition + 1, linelength - lastSlashPosition - 1);
+                    listFileName.Add(name);
+                }
+
+                foreach (string s in numbers)
+                {
+                    listFileIds.Add(s);
+                }
+
+                if (!File.Exists(binaryPath))
+                    File.Create(binaryPath).Close();
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine();
+                Console.WriteLine("Adding new rows to BLP_Root...");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+
+                string[] lines = File.ReadAllLines(binaryPath);
+
+                if (lines.Length == 0)
+                {
+                    for (int i = 0; i < listFileName.Count; i++)
+                    {
+                        StreamWriter sw = File.AppendText(binaryPath);
+                        if (listFileName[i].Contains(".blp"))
+                        {
+                            sw.WriteLine(listFileName[i] + "," + listFileIds[i]);
+                            Console.WriteLine("- " + listFileName[i] + "," + listFileIds[i] + " added");
+                            sw.Close();
+                        }
+                        else
+                        {
+                            sw.Close();
+                        }
+                    }
+                }
+                else
+                {
+
+                    for (int i = 0; i < listFileName.Count; i++)
+                    {
+                        if (!File.ReadAllText(binaryPath).Contains(listFileName[i]))
+                        {
+                            StreamWriter sw = File.AppendText(binaryPath);
+                            if (listFileName[i].Contains(".blp"))
+                            {
+                                Console.WriteLine("- " + listFileName[i] + "," + listFileIds[i] + " added");
+                                sw.WriteLine(Environment.NewLine + listFileName[i] + "," + listFileIds[i]);
+                                sw.Close();
+                            }
+                            else
+                            {
+                                sw.Close();
+                            }
+                        }
+                        else
+                        {
+                            if (listFileName[i].Contains(".blp"))
+                            {
+                                Console.WriteLine("- " + listFileName[i] + " already exists in BLP_Root");
                             }
                         }
                     }

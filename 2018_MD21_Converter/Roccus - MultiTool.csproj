@@ -53,6 +53,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,11 +62,69 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBInstance.cs" />
+    <Compile Include="EnumDefinition\EnumType.cs" />
+    <Compile Include="frmItemAdder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmItemAdder.Designer.cs">
+      <DependentUpon>frmItemAdder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmWeaponSmith.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWeaponSmith.Designer.cs">
+      <DependentUpon>frmWeaponSmith.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmArmorSmith.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmArmorSmith.Designer.cs">
+      <DependentUpon>frmArmorSmith.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBackupSQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBackupSQL.Designer.cs">
+      <DependentUpon>frmBackupSQL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConnection.Designer.cs">
+      <DependentUpon>frmConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeosetDecryptor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeosetDecryptor.Designer.cs">
+      <DependentUpon>GeosetDecryptor.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeaderFix.cs" />
+    <Compile Include="MaskDecryptor.cs" />
+    <Compile Include="MaskGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaskGenerator.Designer.cs">
+      <DependentUpon>MaskGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Md21ToWodMd20.cs" />
+    <Compile Include="Progress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Progress.Designer.cs">
+      <DependentUpon>Progress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="rootGenCaschost.cs" />
-    <Compile Include="rootGenFiledara.cs" />
+    <Compile Include="rootGenFiledata.cs" />
     <Compile Include="Start.cs" />
+    <Compile Include="Reader.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="WodMd20ToMd21.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,7 +147,23 @@
     <Content Include="docs\MySqlParameterCollection.xml" />
     <Content Include="docs\MySqlTransaction.xml" />
     <Content Include="FodyWeavers.xml" />
+    <Content Include="res\temp.png" />
     <Content Include="trademark200.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="frmArmorSmith.resx">
+      <DependentUpon>frmArmorSmith.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWeaponSmith.resx">
+      <DependentUpon>frmWeaponSmith.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeosetDecryptor.resx">
+      <DependentUpon>GeosetDecryptor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Costura.Fody.3.1.2\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.3.1.2\build\Costura.Fody.targets')" />
