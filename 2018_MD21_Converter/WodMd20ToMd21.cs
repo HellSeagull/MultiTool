@@ -125,6 +125,7 @@ namespace Roccus_MultiTool
                     }
                     else
                     {
+                        //Fix Weapon
                         if (name.Length == modelName.Length + 2)
                             name = name.Substring(0, name.Length - 2);
                     }
