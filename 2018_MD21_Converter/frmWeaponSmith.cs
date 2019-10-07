@@ -167,7 +167,7 @@ namespace Roccus_MultiTool
                     if (!LegionBox.Checked)
                     {
                         MySqlCommand cmd_1 = new MySqlCommand(@"INSERT INTO " + EnumDefinition.EnumType.Tables.item.ToString() + " (" + getTableColumns(EnumDefinition.EnumType.Tables.item.ToString())
-                                                                + ") VALUES (@param1,4,4,@param3,@param4,@param5,1,@param2,11,0)", con.TheConnection);
+                                                                + ") VALUES (@param1,2,4,@param3,@param4,@param5,1,@param2,11,0)", con.TheConnection);
                         cmd_1.Parameters.AddWithValue("@param1", itemIDTxt.Text);
                         cmd_1.Parameters.AddWithValue("@param2", iconFileDataIDTxt.Text);
                         cmd_1.Parameters.AddWithValue("@param3", (int)(EnumDefinition.EnumType.MaterialWeapon)Enum.Parse(typeof(EnumDefinition.EnumType.MaterialWeapon), materialBox.Text));
@@ -256,7 +256,7 @@ namespace Roccus_MultiTool
                     else
                     {
                         MySqlCommand cmd_1 = new MySqlCommand(@"INSERT INTO " + EnumDefinition.EnumType.Tables.item.ToString() + " (" + getTableColumns(EnumDefinition.EnumType.Tables.item.ToString())
-                                        + ") VALUES (@param1,@param2,4,4,1,@param3,@param4,@param5,11,0)", con.TheConnection);
+                                        + ") VALUES (@param1,@param2,2,4,1,@param3,@param4,@param5,11,0)", con.TheConnection);
                         cmd_1.Parameters.AddWithValue("@param1", itemIDTxt.Text);
                         cmd_1.Parameters.AddWithValue("@param2", iconFileDataIDTxt.Text);
                         cmd_1.Parameters.AddWithValue("@param3", (int)(EnumDefinition.EnumType.MaterialWeapon)Enum.Parse(typeof(EnumDefinition.EnumType.MaterialWeapon), materialBox.Text));

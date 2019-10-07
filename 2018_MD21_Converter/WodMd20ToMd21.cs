@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Roccus_MultiTool
@@ -39,17 +40,24 @@ namespace Roccus_MultiTool
             for (int i = 0; i < file.Length; i++)
             {
 
-                if ((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".bone"))
+                if ((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".bone"))
                 {
-
-                    BoneChunk.Add(new BoneChunk()
+                    string name = (file[i][0].ToLowerInvariant());
+                    name = name.Replace("-", "");
+                    name = Regex.Replace(name, @"[\d-]", string.Empty);
+                    name = name.Replace("_.", ".");
+                    name = name.Replace(".bone", "");
+                    if (name == modelName)
                     {
-                        fileName = file[i][0],
-                        rootId = file[i][1],
-                    });
+                        BoneChunk.Add(new BoneChunk()
+                        {
+                            fileName = file[i][0],
+                            rootId = file[i][1],
+                        });
+                    }
 
                 }
-                else if (((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".bone")) == false)
+                else if (((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".bone")) == false)
                 {
 
                     continue;
@@ -68,20 +76,26 @@ namespace Roccus_MultiTool
             for (int i = 0; i < file.Length; i++)
             {
 
-                if ((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".anim"))
+                if ((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".anim"))
                 {
-
-                    AnimChunk.Add(new AnimChunk()
+                    string name = (file[i][0].ToLowerInvariant());
+                    name = name.Replace(".anim", "");
+                    name = name.Replace("-", "");
+                    name = Regex.Replace(name, @"[\d-]", string.Empty);
+                    if (name == modelName)
                     {
-                        fileName = file[i][0],
-                        rootId = file[i][1],
-                        //Particularité des AFID, parfois il y a un subanimID
-                        AnimId = file[i][0].Substring(modelName.Length, 4).TrimStart('0'),
-                        subAnimId = file[i][0].Substring(modelName.Length + 6, 1)
-                    });
+                        AnimChunk.Add(new AnimChunk()
+                        {
+                            fileName = file[i][0],
+                            rootId = file[i][1],
+                            //Particularité des AFID, parfois il y a un subanimID
+                            AnimId = file[i][0].Substring(modelName.Length, 4).TrimStart('0'),
+                            subAnimId = file[i][0].Substring(modelName.Length + 6, 1)
+                        });
+                    }
 
                 }
-                else if (((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".anim")) == false)
+                else if (((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".anim")) == false)
                 {
 
                     continue;
@@ -99,18 +113,33 @@ namespace Roccus_MultiTool
             for (int i = 0; i < file.Length; i++)
             {
 
-                if ((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".skin"))
+                if ((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".skin"))
                 {
-
-                    SkinChunk.Add(new SkinChunk()
+                    string name = (file[i][0].ToLowerInvariant());
+                    name = name.Replace(".skin", "");
+                    name = name.Replace("-", "");
+                    name = name.Replace("_lod", "");
+                    if (name.StartsWith("collections") || name.StartsWith("shoulder") || name.StartsWith("helm") || name.StartsWith("lshoulder") || name.StartsWith("rshoulder"))
                     {
-                        fileName = file[i][0],
-                        rootId = file[i][1],
+                        name = name.Substring(0, name.Length - 2);
+                    }
+                    else
+                    {
+                        if (name.Length == modelName.Length + 2)
+                            name = name.Substring(0, name.Length - 2);
+                    }
+                    if (name == modelName)
+                    {
+                        SkinChunk.Add(new SkinChunk()
+                        {
+                            fileName = file[i][0],
+                            rootId = file[i][1],
 
-                    });
+                        });
+                    }
 
                 }
-                else if (((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".skin")) == false)
+                else if (((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".skin")) == false)
                 {
 
                     continue;
@@ -128,18 +157,24 @@ namespace Roccus_MultiTool
             for (int i = 0; i < file.Length; i++)
             {
 
-                if ((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".phys"))
+                if ((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".phys"))
                 {
-
-                    PhysChunk.Add(new PhysChunk()
+                    string name = (file[i][0].ToLowerInvariant());
+                    name = name.Replace(".phys", "");
+                    name = name.Replace("-", "");
+                    name = Regex.Replace(name, @"[\d-]", string.Empty);
+                    if (name == modelName)
                     {
-                        fileName = file[i][0],
-                        rootId = file[i][1],
+                        PhysChunk.Add(new PhysChunk()
+                        {
+                            fileName = file[i][0],
+                            rootId = file[i][1],
 
-                    });
+                        });
+                    }
 
                 }
-                else if (((file[i][0]).StartsWith(modelName) && (file[i][0]).EndsWith(".phys")) == false)
+                else if (((file[i][0].ToLowerInvariant()).StartsWith(modelName) && (file[i][0].ToLowerInvariant()).EndsWith(".phys")) == false)
                 {
 
                     continue;
